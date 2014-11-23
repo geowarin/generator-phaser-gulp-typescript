@@ -1,0 +1,8 @@
+.DS_Store
+*.db
+node_modules/
+vendor/
+.idea/
+*.iml
+build/
+dist/

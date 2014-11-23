@@ -1,0 +1,26 @@
+{
+  "name": "<%= _.slugify(gameName) %>",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "*",
+    "del": "*",
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-concat-sourcemap": "*",
+    "gulp-connect": "*",
+    "gulp-gh-pages": "*",
+    "gulp-less": "*",
+    "gulp-minify-css": "*",
+    "gulp-minify-html": "*",
+    "gulp-mocha-phantomjs": "*",
+    "gulp-open": "*",
+    "gulp-processhtml": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-typescript": "*",
+    "gulp-uglifyjs": "*",
+    "gulp-util": "*",
+    "gulp-watch": "*",
+    "run-sequence": "*"
+  }
+}
