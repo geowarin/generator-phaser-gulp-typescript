@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-  gutil = require('gulp-util'),
   ts = require('gulp-typescript'),
   less = require('gulp-less'),
   minifyCSS = require('gulp-minify-css'),
@@ -7,12 +6,11 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   processhtml = require('gulp-processhtml'),
   connect = require('gulp-connect'),
-  open = require("gulp-open"),
+  open = require('gulp-open'),
   del = require('del'),
   uglify = require('gulp-uglifyjs'),
   deploy = require('gulp-gh-pages'),
-  runSequence = require('run-sequence'),
-  mochaPhantomJS = require('gulp-mocha-phantomjs');
+  runSequence = require('run-sequence');
 
 var paths = {
   assets: 'src/assets/**/*',
@@ -22,7 +20,6 @@ var paths = {
     'src/vendor/phaser-official/build/phaser.min.js'
   ],
   ts: 'src/scripts/**/*.ts',
-  test: 'test/**/*.js',
   build: './build/',
   dist: './dist/'
 };
@@ -107,20 +104,9 @@ gulp.task('deploy', function () {
     .pipe(deploy());
 });
 
-gulp.task('mocha', function () {
-    return gulp.src('test/test.html', {read: false})
-        .pipe(mochaPhantomJS());
-});
-
-gulp.task('watchTest', function () {
-  gulp.watch(paths.ts, ['typescript', 'mocha']);
-  gulp.watch(paths.test, ['mocha']);
-});
-
 gulp.task('default', function() {
   runSequence('clean', ['typescript', 'less', 'connect', 'watch'], 'open');
 });
 gulp.task('build', function() {
   return runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
 });
-gulp.task('test', ['typescript', 'mocha']);

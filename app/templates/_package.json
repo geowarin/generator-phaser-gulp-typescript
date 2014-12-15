@@ -13,7 +13,6 @@
     "gulp-less": "*",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
-    "gulp-mocha-phantomjs": "*",
     "gulp-open": "*",
     "gulp-processhtml": "*",
     "gulp-sourcemaps": "*",
