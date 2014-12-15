@@ -3,6 +3,7 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
+var fs = require('fs');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -50,6 +51,8 @@ module.exports = yeoman.generators.Base.extend({
 
   install: {
     installDeps: function () {
+      this.src.copy('gulpfile.js', 'gulpfileInstall.js');
+
       this.installDependencies({
         bower: true,
         npm: false,
@@ -58,13 +61,20 @@ module.exports = yeoman.generators.Base.extend({
       });
     },
 
+    _copyInDest: function (src, dest) {
+      src = this.dest.fromBase(src);
+      dest = this.dest.fromBase(dest);
+      fs.writeFileSync(dest, fs.readFileSync(src));
+    },
+
     _postInstall: function () {
       if (this.options['skip-install']) {
         this.log(chalk.red('Installation was skipped.'));
         this.log('You will have to manually copy phaser ' + chalk.cyan('typescript definitions') + ' to ' + chalk.yellow('src/scripts/definitions'));
       } else {
-        this.log(chalk.red('Copy'));
-        this.dest.copy('src/vendor/phaser-official/build/phaser.d.ts', 'src/scripts/definitions/phaser.d.ts');
+        var copyInDest = this.install._copyInDest.bind(this);
+        copyInDest('src/vendor/phaser-official/typescript/phaser.d.ts', 'src/scripts/definitions/phaser.d.ts');
+        copyInDest('src/vendor/phaser-official/typescript/pixi.d.ts', 'src/scripts/definitions/pixi.d.ts');
       }
     }
   },
