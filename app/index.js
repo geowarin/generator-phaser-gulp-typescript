@@ -55,7 +55,7 @@ module.exports = yeoman.generators.Base.extend({
 
       this.installDependencies({
         bower: true,
-        npm: false,
+        npm: true,
         skipInstall: this.options['skip-install'],
         callback: this.install._postInstall.bind(this)
       });
