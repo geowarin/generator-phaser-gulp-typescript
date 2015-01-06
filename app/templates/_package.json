@@ -10,7 +10,9 @@
     "gulp-concat-sourcemap": "*",
     "gulp-connect": "*",
     "gulp-gh-pages": "*",
+    "gulp-inject": "*",
     "gulp-less": "*",
+    "gulp-load-plugins": "*",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
     "gulp-open": "*",
@@ -20,6 +22,7 @@
     "gulp-uglifyjs": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
+    "main-bower-files": "*",
     "run-sequence": "*"
   }
 }

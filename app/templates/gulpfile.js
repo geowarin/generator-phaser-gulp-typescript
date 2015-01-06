@@ -1,27 +1,18 @@
 var gulp = require('gulp'),
-  ts = require('gulp-typescript'),
-  less = require('gulp-less'),
-  minifyCSS = require('gulp-minify-css'),
+  $ = require('gulp-load-plugins')(),
+  bowerFiles = require('main-bower-files'),
   concat = require('gulp-concat-sourcemap'),
-  sourcemaps = require('gulp-sourcemaps'),
-  processhtml = require('gulp-processhtml'),
-  connect = require('gulp-connect'),
-  open = require('gulp-open'),
-  del = require('del'),
-  uglify = require('gulp-uglifyjs'),
   deploy = require('gulp-gh-pages'),
+  del = require('del'),
   runSequence = require('run-sequence');
 
 var paths = {
   assets: 'src/assets/**/*',
   less: 'src/css/main.less',
   index: 'src/index.html',
-  libs: [
-    'src/vendor/phaser-official/build/phaser.min.js'
-  ],
   ts: 'src/scripts/**/*.ts',
-  build: './build/',
-  dist: './dist/'
+  build: 'build',
+  dist: 'dist'
 };
 
 gulp.task('clean', function (cb) {
@@ -30,10 +21,10 @@ gulp.task('clean', function (cb) {
 
 gulp.task('copy', function () {
   return gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.dist + 'assets'));
+    .pipe(gulp.dest(paths.dist + '/assets'));
 });
 
-var tsProject = ts.createProject({
+var tsProject = $.typescript.createProject({
   declarationFiles: true,
   noExternalResolve: true,
   sortOutput: true,
@@ -42,30 +33,36 @@ var tsProject = ts.createProject({
 
 gulp.task('typescript', function () {
   var tsResult = gulp.src(paths.ts)
-    .pipe(sourcemaps.init())
-    .pipe(ts(tsProject));
+    .pipe($.sourcemaps.init())
+    .pipe($.typescript(tsProject));
 
   return tsResult.js
     .pipe(concat('main.js'))
-    .pipe(sourcemaps.write())
+    .pipe($.sourcemaps.write())
     .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('less', function () {
   return gulp.src(paths.less)
-    .pipe(less())
+    .pipe($.less())
     .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('processhtml', function () {
   return gulp.src(paths.index)
-    .pipe(processhtml())
+    .pipe($.processhtml())
     .pipe(gulp.dest(paths.dist));
 });
 
+gulp.task('inject', function () {
+  return gulp.src(paths.index)
+    .pipe($.inject(gulp.src(bowerFiles()), {name: 'bower', relative: true}))
+    .pipe(gulp.dest('src'));
+});
+
 gulp.task('reload', ['typescript'], function () {
-  gulp.src('src/*.html')
-    .pipe(connect.reload());
+  gulp.src(paths.index)
+    .pipe($.connect.reload());
 });
 
 gulp.task('watch', function () {
@@ -75,38 +72,39 @@ gulp.task('watch', function () {
 });
 
 gulp.task('connect', function () {
-  connect.server({
+  $.connect.server({
     root: [__dirname + '/src', paths.build],
     port: 9000,
     livereload: true
   });
 });
 
-gulp.task("open", function () {
+gulp.task('open', function () {
   gulp.src(paths.index)
-    .pipe(open("", {url: "http://localhost:9000"}));
+    .pipe($.open('', {url: 'http://localhost:9000'}));
 });
 
 gulp.task('minifyJs', ['typescript'], function () {
-  return gulp.src(paths.libs.concat(paths.build + 'main.js'))
-    .pipe(uglify('all.min.js', {outSourceMap: false}))
+  var all = bowerFiles().concat(paths.build + '/main.js');
+  return gulp.src(all)
+    .pipe($.uglifyjs('all.min.js', {outSourceMap: false}))
     .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('minifyCss', ['less'], function () {
-  return gulp.src(paths.build + 'main.css')
-    .pipe(minifyCSS())
+  return gulp.src(paths.build + '/main.css')
+    .pipe($.minifyCss())
     .pipe(gulp.dest(paths.dist))
 });
 
 gulp.task('deploy', function () {
-  return gulp.src('./dist/**/*')
+  return gulp.src('dist/**/*')
     .pipe(deploy());
 });
 
-gulp.task('default', function() {
-  runSequence('clean', ['typescript', 'less', 'connect', 'watch'], 'open');
+gulp.task('default', function () {
+  runSequence('clean', ['inject', 'typescript', 'less', 'connect', 'watch'], 'open');
 });
-gulp.task('build', function() {
-  return runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
+gulp.task('build', function () {
+  return runSequence('clean', ['copy', 'minifyJs', 'minifyCss', 'processhtml']);
 });
