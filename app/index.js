@@ -4,13 +4,15 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var fs = require('fs');
+var pkg = require('../package.json');
 
 module.exports = yeoman.generators.Base.extend({
 
   initializing: {
     header: function () {
       this.log(this.yeoman);
-      this.log(chalk.magenta("Phaser + Typescript + Gulp generator. "));
+      this.log(chalk.magenta("Phaser + Typescript + Gulp"));
+      this.log(chalk.cyan("version " + pkg.version));
     }
   },
 
