@@ -1,6 +1,6 @@
 {
   "name": "generator-phaser-gulp-typescript",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Yeoman generator for a typescript game using phaser js",
   "readme": "",
   "repository": "geowarin/generator-phaser-gulp-typescript",
