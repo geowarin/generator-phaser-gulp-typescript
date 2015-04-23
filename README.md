@@ -8,6 +8,8 @@ You will get :
 * Autocompletion thanks to typescript definitions files
 * Typescript debugging in your browser with source maps
 
+The current version works with Phaser 2.3.0 and typescript 1.4!
+
 ## Getting Started
 
 Install [Yeoman](http://yeoman.io) :
@@ -44,6 +46,18 @@ You will need to setup the `gh-page` branch as instructed [here](https://github.
 First build, then :
 
     gulp deploy
+
+## Gotchas
+
+The typescript task needs to have the definitions in the src/scripts/definitions.
+This will make the compilation much faster.
+You can find these definitions in the phaser-official bower dependencies or on the Phaser repository.
+
+By default, the generator will try to copy those definitions but you may have to do this yourself in case of error.
+
+In IntelliJ or WebStorm, having duplicated definitions will can cause problems.
+I recommend deleting the `definitions` folder of `vendor/phaser-official`.
+It's a bower dependency so you can regenerate them at will.
 
 ## License
 
