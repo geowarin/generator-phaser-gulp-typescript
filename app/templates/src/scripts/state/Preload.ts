@@ -4,6 +4,7 @@ module <%= _.classify(gameName) %>.State {
 
     preload() {
       this.preloadBar = this.add.sprite(290, 290, 'preload-bar');
+      this.load.setPreloadSprite(this.preloadBar);
     }
 
     create() {
