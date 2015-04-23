@@ -1,9 +1,14 @@
-/// <reference path="definitions/phaser.d.ts"/>
+/// <reference path="definitions/phaser.comments.d.ts"/>
 
 module <%= _.classify(gameName) %> {
   export class Game extends Phaser.Game {
     constructor() {
-      super(800, 600, Phaser.CANVAS, '<%= _.dasherize(gameName) %>');
+      super({
+        width: 800,
+        height: 600,
+        transparent: false,
+        enableDebug: true
+      });
 
       this.state.add('boot', State.Boot);
       this.state.add('preload', State.Preload);

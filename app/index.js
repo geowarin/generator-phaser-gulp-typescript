@@ -4,6 +4,7 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var fs = require('fs');
+var _ = require('underscore.string');
 var pkg = require('../package.json');
 
 module.exports = yeoman.generators.Base.extend({
@@ -77,8 +78,9 @@ module.exports = yeoman.generators.Base.extend({
         this.log('You will have to manually copy phaser ' + chalk.cyan('typescript definitions') + ' to ' + chalk.yellow('src/scripts/definitions'));
       } else {
         var copyInDest = this.install._copyInDest.bind(this);
-        copyInDest('src/vendor/phaser-official/typescript/phaser.d.ts', 'src/scripts/definitions/phaser.d.ts');
-        copyInDest('src/vendor/phaser-official/typescript/pixi.d.ts', 'src/scripts/definitions/pixi.d.ts');
+        copyInDest('src/vendor/phaser-official/typescript/p2.d.ts', 'src/scripts/definitions/p2.d.ts');
+        copyInDest('src/vendor/phaser-official/typescript/phaser.comments.d.ts', 'src/scripts/definitions/phaser.comments.d.ts');
+        copyInDest('src/vendor/phaser-official/typescript/pixi.comments.d.ts', 'src/scripts/definitions/pixi.comments.d.ts');
       }
     }
   },
